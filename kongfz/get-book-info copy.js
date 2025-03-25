@@ -8,6 +8,17 @@
 // @grant        none
 // ==/UserScript==
 
+function objToEntry (obj){
+  return Object.entries(obj).map(([key, value]) => `${key}@${value}`).join('$$')
+}
+
+function entryToObj (entry){
+  return entry.split('$$').reduce((obj, item) => {
+    const [key, value] = item.split('@')
+    obj[key] = value
+    return obj
+  }, {})
+}
 
 function countPrice() {
   let priceList = []
@@ -98,7 +109,7 @@ function main() {
             border-radius: 5px;
             z-index: 9999;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            min-width: 400px;
+            width: 400px;
         `;
 
     let priceInfo = countPrice()
@@ -110,13 +121,29 @@ function main() {
       recommendPrice = Math.floor(recommendPrice) + 1
     }
 
+    info.recommendPrice = recommendPrice
+    info.标题 = `二手正版《${info.title}》${info.author} ${info.publisher}`
+    info.desc = `
+【包邮】在售就是还有货，可以直接拍，择优发货，仓库随机发货，非偏远地区包邮。
+
+【发货】拍下后一般24小时内发货，最晚不超过48小时。
+
+【成色】一般为8到9.5成新，择优发货，一般没有笔记划线，也没有破损缺页
+
+【找书】有大量书籍未上架，如果需要可以点击"我想要"联系，最后提供ISBN编码
+
+【售后】有问题可以联系客服退货，非质量问题的话不退不换`
+
+
     infoBox.innerHTML = `
             <h3 style="margin:0 0 0px;color:#007bff;">书籍信息</h3>
             ${createInfoItem('标题', info.title)}
             ${createInfoItem('作者', info.author)}
             ${createInfoItem('出版社', info.publisher)}
             ${createInfoItem('ISBN', info.ISBN)}
-            ${createInfoItem('title', `二手正版《${info.title}》${info.author} ${info.publisher}`)}
+            ${createInfoItem('title', info.标题)}
+            ${createInfoItem('desc', info.desc, { spanDisplay: 'none' })}
+            ${createInfoItem('info', objToEntry(info), { spanDisplay: 'none' })}
 
             <h3 style="margin:0 0 0px;color:#007bff;">价格信息</h3>
             ${createInfoItem('最低/最高', priceInfo.lowestPrice + ' / ' + priceInfo.highestPrice)}
@@ -130,13 +157,13 @@ function main() {
   }
 
   // 创建带复制按钮的信息项
-  function createInfoItem(label, value) {
+  function createInfoItem(label, value, option) {
     return `
             <div class="info-item" style="margin:2px 0;display:flex;align-items:center;">
                 <strong style="flex:0 0 90px;">${label}：</strong>
-                <span style="flex:1;margin:0 10px;word-break:break-all;">${value}</span>
-                <button 
-                    class="copy-btn" 
+                <span style="flex:1;margin:0 10px;word-break:break-all;display: ${option?.spanDisplay || 'block'}">${value}</span>
+                <button
+                    class="copy-btn"
                     data-value="${value}"
                     style="flex:0 0 auto;padding:2px 8px;background:#007bff;color:white;border:none;border-radius:3px;cursor:pointer;">
                     复制
