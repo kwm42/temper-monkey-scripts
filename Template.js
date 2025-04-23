@@ -1,0 +1,68 @@
+// ==UserScript==
+// @name         显示当前时间按钮
+// @namespace    http://tampermonkey.net/
+// @version      1.1
+// @description 在页面右上角添加一个按钮，点击显示当前时间
+// @author       You
+// @match        *://*/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // 创建并返回一个美观的按钮元素
+    function createButton() {
+        const button = document.createElement('button');
+        button.innerHTML = 'xxx';
+        button.id = 'MonkeyButton1';
+
+        // 设置按钮样式
+        button.style.position = 'fixed';
+        button.style.top = '50%';
+        button.style.right = '0';
+        button.style.transform = 'translateY(-50%)';
+        button.style.zIndex = '9999';
+        button.style.padding = '10px 15px';
+        button.style.backgroundColor = '#4CAF50';
+        button.style.color = 'white';
+        button.style.border = 'none';
+        button.style.borderRadius = '5px 0 0 5px';
+        button.style.cursor = 'pointer';
+        button.style.boxShadow = '-2px 2px 5px rgba(0,0,0,0.2)';
+        button.style.fontSize = '14px';
+        button.style.fontWeight = 'bold';
+        button.style.transition = 'all 0.3s ease';
+
+        // 添加悬停效果
+        button.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#45a049';
+            this.style.paddingRight = '20px';
+        });
+
+        button.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#4CAF50';
+            this.style.paddingRight = '15px';
+        });
+
+        return button;
+    }
+
+    // 显示当前时间的函数
+    function showCurrentTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        const dateString = now.toLocaleDateString();
+        alert(`当前时间: ${timeString}\n当前日期: ${dateString}`);
+    }
+
+    // 主函数
+    function init() {
+        const button = createButton();
+        button.addEventListener('click', showCurrentTime);
+        document.body.appendChild(button);
+    }
+
+    // 初始化
+    init();
+})();
