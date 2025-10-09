@@ -5,6 +5,14 @@
 // @description  Adds a download button to the bottom-right corner of each GIF video on CreatePorn.com, allowing direct MP4 download using blob fetching.
 // @author       Grok
 // @match        https://www.createporn.com/*
+// @match        https://www.createhentai.com/gifs*
+// @match        https://www.createaishemale.com/gifs*
+// @match        https://www.createaiasian.com/gifs*
+// @match        https://www.createaiebony.com/gifs*
+// @match        https://www.createaibbw.com/gifs*
+// @match        https://www.createailatina.com/gifs*
+// @match        https://www.createaiindian.com/gifs*
+// @match        https://www.createaimilf.com/gifs*
 // @grant        GM_xmlhttpRequest
 // @connect      cdn7.imgpog.com
 // ==/UserScript==
